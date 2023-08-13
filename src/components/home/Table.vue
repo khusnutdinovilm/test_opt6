@@ -17,24 +17,20 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted, provide, computed } from "vue";
+import { ref, provide } from "vue";
 import FilterColumns from "./FilterColumns.vue";
 import TableHead from "./TableHead.vue";
 import TableBody from "./TableBody.vue";
-
-import { useStore } from "vuex";
 
 export default {
   props: {
     rows: { type: Object, default: () => {} },
     columns: { type: Array, default: () => [] },
   },
-  setup(props, { emit }) {
+  setup(props) {
     const filteredColumns = ref(props.columns);
     const filteredRows = ref(props.rows);
     const updated = ref(0);
-
-    const ths = ref(null);
 
     const updateRows = (rows) => {
       filteredRows.value = rows;

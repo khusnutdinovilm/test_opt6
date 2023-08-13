@@ -41,10 +41,10 @@ export default {
   margin: 0
   padding: 0
   box-sizing: border-box
-  font-weight: 16px
+  font-family: 'MyriadPro', sans-serif
+  font-size: 16px
 main, header
   padding: 25px
-  // padding-left: 229px
   &.full
     padding: 25px
 </style>

@@ -3,94 +3,54 @@
     <filter-columns
       v-if="$store.getters.isDesktop"
       :columns="columns"
-      @updated="filterColumns"
+      @filter-columns="filter"
     />
     <table class="table" v-col-resize>
       <table-head :columns="filteredColumns" />
       <table-body
         :rows="filteredRows"
         :columns="filteredColumns"
-        :key="updated"
+        :key="updatedTable"
       />
     </table>
   </div>
 </template>
 
-<script>
-import { ref, provide } from "vue";
+<script setup>
 import FilterColumns from "./FilterColumns.vue";
 import TableHead from "./TableHead.vue";
 import TableBody from "./TableBody.vue";
+import TableReciept from "@/components/home/TableReciept.vue";
 
-export default {
-  props: {
-    rows: { type: Object, default: () => {} },
-    columns: { type: Array, default: () => [] },
-  },
-  setup(props) {
-    const filteredColumns = ref(props.columns);
-    const filteredRows = ref(props.rows);
-    const updated = ref(0);
+import { ref, provide } from "vue";
 
-    const updateRows = (rows) => {
-      filteredRows.value = rows;
-      updated.value++;
-    };
-    provide("updateRows", updateRows);
+const props = defineProps({
+  rows: { type: Array, default: () => [] },
+  columns: { type: Array, default: () => [] },
+});
 
-    const updateColumns = (columns) => {
-      filteredColumns.value = columns;
-      updated.value++;
-    };
-    provide("updateColumn", updateColumns);
+const filteredColumns = ref(props.columns);
+const filteredRows = ref(props.rows);
 
-    const filterColumns = (columns) => {
-      filteredColumns.value = columns;
-    };
+const updatedTable = ref(0);
 
-    return {
-      updated,
-      filteredColumns,
-      filteredRows,
-      filterColumns,
-    };
-  },
-  components: {
-    FilterColumns,
-    TableHead,
-    TableBody,
-  },
+const updateRows = (rows) => {
+  if (!rows) return;
+  filteredRows.value = rows;
+  updatedTable.value++;
 };
+provide("updateRows", updateRows);
+
+const updateColumns = (columns) => {
+  filteredColumns.value = columns;
+  updatedTable.value++;
+};
+provide("updateColumn", updateColumns);
+
+const filter = (columns) => (filteredColumns.value = columns);
 </script>
 
 <style lang="sass">
-.flip-list-move
-  transition: transform .3s
-
-.table-wrapper
-  // position: relative
-  margin: 0 //10px
-
-.filter-columns
-  margin: 7px 14px 0 auto
-  text-align: right
-  position: relative
-  &__btn
-    border: none
-    background-color: #00000000
-    cursor: pointer
-    // &:hover
-    //   opacity: 0.8
-
-  &__menu
-    position: absolute
-    top: 22px
-    right: 5px
-    z-index: 6
-  &__list
-    list-style: none
-
-////
 .table
   width: 100%
   table-layout: fixed
@@ -101,9 +61,6 @@ export default {
     overflow: hidden
     white-space: nowrap
     text-overflow: clip
-
-  &__table-head
-    // display: none
 
   &__table-head-cell
     cursor: grab
@@ -140,12 +97,8 @@ export default {
     vertical-align: center
     padding: 5px 10px
     min-width: 15px
-    // &-actions
     position: relative
     overflow: visible !important
-    // &-select-in-edit
-    //   position: relative
-    //   overflow: visible !important
 
   &__drag-button
     margin-bottom: 5px !important
@@ -161,10 +114,9 @@ export default {
 
 .col-resize
   position: absolute
-  // margin-left: -1px
   width: 3px
-  // background-color: black
   z-index: 5
+
   &__grip
     position: absolute
     top: 0
@@ -172,13 +124,11 @@ export default {
     width: 1px
     margin: 0 1px
     height: 100%
-    // background-color: black
   &__resizer
     position: absolute
     top: 0
     width: 10px
     height: 100%
-    // cursor: e-resizer
 
 .col-resize_moved
   .col-resize__grip
@@ -186,11 +136,7 @@ export default {
 
 .columns-resize-bar
   width: 1px
-  // background-color: #000
-  // margin-left: -5px
 
-  // height: 100%
-  // margin: 0 1px
   &:hover
     background-color: #000
 </style>

@@ -11,8 +11,9 @@ function resize(el) {
   const barHeight =
     nodeName === "TABLE" ? table.offsetHeight : thead.offsetHeight;
 
-  const resizeContainer = document.createElement("div");
   table.style.position = "relative";
+
+  const resizeContainer = document.createElement("div");
   resizeContainer.style.position = "absolute";
   resizeContainer.style.width = table.offsetWidth + "px";
   resizeContainer.style.height = table.offsetHeight + "px";

@@ -2,7 +2,7 @@
   <div class="order-list">
     <div class="order-list__section order-list__add-new-order">
       <button class="order-list__add-new-order-btn" @click="addOrder">
-        <svg-icon name="btn-plus" />
+        <svg-btn-add />
         <span>Добавить строку</span>
       </button>
     </div>
@@ -11,35 +11,8 @@
       Записей пока что нет. Добавьте новую.
     </div>
     <div class="order-list__section order-list__table" v-else>
-      <home-table :columns="columns" :rows="orders" />
-      <div class="order-list__receipt">
-        <div class="receipt">
-          <div class="receipt__list">
-            <div class="receipt__row">
-              <span class="receipt__row-caption">Сумма: </span>
-              <span class="receipt__row-data">
-                {{ receipt.totalPrice }} руб
-              </span>
-            </div>
-            <div class="receipt__row">
-              <span class="receipt__row-caption">Кол-во: </span>
-              <span class="receipt__row-data">{{ receipt.totalCount }} шт</span>
-            </div>
-            <div class="receipt__row">
-              <span class="receipt__row-caption">Общий вес: </span>
-              <span class="receipt__row-data"
-                >{{ receipt.totalWeight }} кг</span
-              >
-            </div>
-          </div>
-          <div class="receipt__total">
-            <span class="receipt__total-caption">Общая сумма: </span>
-            <span class="receipt__total-data">
-              {{ receipt.totalPrice }} руб
-            </span>
-          </div>
-        </div>
-      </div>
+      <home-table :columns="columns" :rows="orders" :key="orders.length" />
+      <table-reciept />
     </div>
   </div>
 </template>
@@ -47,8 +20,10 @@
 <script>
 import { provide, ref, computed, onMounted } from "vue";
 
+import SvgBtnAdd from "@/components/icons/SvgBtnAdd.vue";
 import SvgIcon from "@/components/ui/SvgIcon.vue";
 import HomeTable from "@/components/home/Table.vue";
+import TableReciept from "@/components/home/TableReciept.vue";
 import Amount from "@/components/home/Amount.vue";
 import { useStore } from "vuex";
 
@@ -100,7 +75,7 @@ export default {
         total: firstProduct.price,
       };
 
-      await store.dispatch('addOrder', newOrder)
+      await store.dispatch("addOrder", newOrder);
     };
 
     const saveOrder = async (order) => {
@@ -124,38 +99,14 @@ export default {
   components: {
     SvgIcon,
     HomeTable,
+    TableReciept,
+    SvgBtnAdd,
     Amount,
   },
 };
 </script>
 
 <style lang="sass" scoped>
-.receipt
-  &__list, &__total
-    padding: 15px
-    border-radius: 5px
-    border: 1px solid #eeeff1
-    background-color: #fbfcfd
-
-  &__row, &__total
-    display: flex
-    flex-direction: row
-    justify-content: space-between
-
-
-  &__row-caption
-    color: #8f8f8f
-
-  &__row-data
-    color: #000
-    text-align: right
-
-  &__total
-    margin-top: 5px
-    &-caption, &-data
-      font-weight: 600
-      color: #000
-
 .table-wrapper
   margin-bottom: 15px
 

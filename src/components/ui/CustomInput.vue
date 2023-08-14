@@ -1,8 +1,10 @@
 <template>
   <div class="custom-input">
-    <label class="label" v-if="$store.getters.isMobile">{{ labelText }}</label>
+    <label class="custom-input__label" v-if="$store.getters.isMobile">
+      {{ labelText }}
+    </label>
     <input
-      class="input"
+      class="custom-input__input"
       :type="type"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
@@ -32,21 +34,21 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.input
-  height: 35px
-  font-size: 15px
-  line-height: 16px
-  padding: 10px 0 9px 15px
-  border-radius: 5px
-  border: solid 1px #ccc
-  width: 100%
-  max-width: 100%
-  appearance: textfield
-.label
-  // display: block
-  color: #8f8f8f
-  display: flex
-  margin: 0 auto 5px 0
-  font-size: 10px
-  line-height: 11px
+.custom-input
+  &__input
+    height: 35px
+    font-size: 15px
+    line-height: 16px
+    padding: 10px 0 9px 15px
+    border-radius: 5px
+    border: solid 1px #ccc
+    width: 100%
+    max-width: 100%
+    appearance: textfield
+  &__label
+    color: #8f8f8f
+    display: flex
+    margin: 0 auto 5px 0
+    font-size: 10px
+    line-height: 11px
 </style>
